@@ -26,6 +26,7 @@ import com.netflix.spinnaker.rosco.providers.registry.CloudProviderBakeHandlerRe
 import com.netflix.spinnaker.rosco.rush.api.RushService
 import com.netflix.spinnaker.rosco.rush.api.ScriptExecution
 import com.netflix.spinnaker.rosco.rush.api.ScriptRequest
+import com.netflix.spinnaker.rosco.providers.util.PackageNameConverter
 import groovy.util.logging.Slf4j
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
@@ -234,6 +235,12 @@ class BakeryController {
     // TODO(duftler): Instruct the scripting engine to kill the execution.
 
     throw new IllegalArgumentException("Unable to locate incomplete bake with id '$statusId'.")
+  }
+
+  @RequestMapping(value = "/api/v1/package/parse/deb", method = RequestMethod.GET)
+  Object parseDebianPackage(@RequestParam("packageName") String packageName) {
+    PackageNameConverter packageNameConverter = new PackageNameConverter()
+    return packageNameConverter.parseDebPackageName(packageName)
   }
 
   private BakeStatus queryExistingBakes(String bakeKey) {

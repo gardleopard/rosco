@@ -679,4 +679,18 @@ class BakeryControllerSpec extends Specification {
       thrown BakeOptions.Exception
   }
 
+  def "should extract name, version, release and arch from deb package"() {
+    setup:
+      def bakeryController = new BakeryController()
+
+    when:
+      def result = bakeryController.parseDebianPackage("foo-bar_1.3.3-7_all")
+
+    then:
+      result.name    == "foo-bar"
+      result.version == "1.3.3"
+      result.release == "7"
+      result.arch    == "all"
+  }
+
 }
